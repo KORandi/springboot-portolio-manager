@@ -1,4 +1,4 @@
-package com.example.pohovor.common.dto;
+package com.example.portfolio.manager.common.dto;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;

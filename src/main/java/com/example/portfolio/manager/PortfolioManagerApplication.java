@@ -1,12 +1,12 @@
-package com.example.pohovor;
+package com.example.portfolio.manager;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class InterviewApplication {
+public class PortfolioManagerApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(InterviewApplication.class, args);
+        SpringApplication.run(PortfolioManagerApplication.class, args);
     }
 }

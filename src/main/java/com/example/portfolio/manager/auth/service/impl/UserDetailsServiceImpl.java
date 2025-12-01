@@ -1,7 +1,7 @@
-package com.example.pohovor.auth.service.impl;
+package com.example.portfolio.manager.auth.service.impl;
 
-import com.example.pohovor.auth.model.User;
-import com.example.pohovor.auth.repository.UserRepository;
+import com.example.portfolio.manager.auth.model.User;
+import com.example.portfolio.manager.auth.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

@@ -1,4 +1,4 @@
-package com.example.pohovor.common.exception;
+package com.example.portfolio.manager.common.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

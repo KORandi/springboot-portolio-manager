@@ -1,6 +1,6 @@
-package com.example.pohovor.auth.repository;
+package com.example.portfolio.manager.auth.repository;
 
-import com.example.pohovor.auth.model.User;
+import com.example.portfolio.manager.auth.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

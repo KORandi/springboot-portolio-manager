@@ -1,8 +1,8 @@
-package com.example.pohovor.common.util;
+package com.example.portfolio.manager.common.util;
 
-import com.example.pohovor.auth.model.User;
-import com.example.pohovor.auth.service.AuthService;
-import com.example.pohovor.common.dto.UserResponse;
+import com.example.portfolio.manager.auth.model.User;
+import com.example.portfolio.manager.auth.service.AuthService;
+import com.example.portfolio.manager.common.dto.UserResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

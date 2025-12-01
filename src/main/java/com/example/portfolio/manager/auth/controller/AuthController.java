@@ -1,11 +1,11 @@
-package com.example.pohovor.auth.controller;
+package com.example.portfolio.manager.auth.controller;
 
-import com.example.pohovor.auth.model.User;
-import com.example.pohovor.auth.service.AuthService;
-import com.example.pohovor.common.dto.LoginRequest;
-import com.example.pohovor.common.dto.RegisterRequest;
-import com.example.pohovor.common.dto.UserResponse;
-import com.example.pohovor.common.util.UserMapper;
+import com.example.portfolio.manager.auth.model.User;
+import com.example.portfolio.manager.auth.service.AuthService;
+import com.example.portfolio.manager.common.dto.LoginRequest;
+import com.example.portfolio.manager.common.dto.RegisterRequest;
+import com.example.portfolio.manager.common.dto.UserResponse;
+import com.example.portfolio.manager.common.util.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;

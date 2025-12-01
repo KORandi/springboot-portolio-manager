@@ -1,4 +1,4 @@
-package com.example.pohovor.auth.model;
+package com.example.portfolio.manager.auth.model;
 
 import javax.persistence.*;
 

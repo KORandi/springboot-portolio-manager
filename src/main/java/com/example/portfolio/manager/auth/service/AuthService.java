@@ -1,6 +1,6 @@
-package com.example.pohovor.auth.service;
+package com.example.portfolio.manager.auth.service;
 
-import com.example.pohovor.auth.model.User;
+import com.example.portfolio.manager.auth.model.User;
 
 public interface AuthService {
 
