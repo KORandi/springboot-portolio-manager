@@ -28,26 +28,18 @@ public class AuthController {
 
     @PostMapping("/register")
     public ResponseEntity<UserResponse> register(@Valid @RequestBody RegisterRequest request) {
-        try {
-            User user = authService.register(
-                    request.getUsername(),
-                    request.getPassword(),
-                    request.getEmail()
-            );
-            return ResponseEntity.ok(userMapper.toResponse(user));
-        } catch (RuntimeException e) {
-            return ResponseEntity.badRequest().build();
-        }
+        User user = authService.register(
+                request.getUsername(),
+                request.getPassword(),
+                request.getEmail()
+        );
+        return ResponseEntity.ok(userMapper.toResponse(user));
     }
 
     @PostMapping("/login")
     public ResponseEntity<UserResponse> login(@Valid @RequestBody LoginRequest request) {
-        try {
-            User user = authService.login(request.getUsername(), request.getPassword());
-            return ResponseEntity.ok(userMapper.toResponse(user));
-        } catch (RuntimeException e) {
-            return ResponseEntity.badRequest().build();
-        }
+        User user = authService.login(request.getUsername(), request.getPassword());
+        return ResponseEntity.ok(userMapper.toResponse(user));
     }
 
     @GetMapping("/user/{username}")
