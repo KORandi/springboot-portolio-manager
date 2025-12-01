@@ -65,11 +65,8 @@ public class AuthServiceImpl implements AuthService {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if (auth != null && auth.isAuthenticated() && auth.getPrincipal() instanceof UserDetails) {
             String username = ((UserDetails) auth.getPrincipal()).getUsername();
-
-            Optional<User> user = userRepository.findByEmail(username);
-            if (user.isPresent()) {
-                return user.get();
-            }
+            return userRepository.findByUsername(username)
+                    .orElse(null);
         }
         return null;
     }

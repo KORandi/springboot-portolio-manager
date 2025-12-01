@@ -45,11 +45,13 @@ public class AuthController {
     @GetMapping("/user/{username}")
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<UserResponse> getUser(@PathVariable String username) {
-        try {
-            User user = authService.findByUsername(username);
-            return ResponseEntity.ok(userMapper.toResponse(user));
-        } catch (RuntimeException e) {
-            return ResponseEntity.notFound().build();
+        User user = authService.findByUsername(username);
+        User currentUser = authService.getCurrentUser();
+
+        if (currentUser != null && currentUser.getId().equals(user.getId())) {
+            return ResponseEntity.ok(UserMapper.toResponse(user));
         }
+
+        return ResponseEntity.ok(UserMapper.toResponseWithoutEmail(user));
     }
 }
