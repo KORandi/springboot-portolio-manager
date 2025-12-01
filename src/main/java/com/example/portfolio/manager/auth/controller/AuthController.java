@@ -49,9 +49,9 @@ public class AuthController {
         User currentUser = authService.getCurrentUser();
 
         if (currentUser != null && currentUser.getId().equals(user.getId())) {
-            return ResponseEntity.ok(UserMapper.toResponse(user));
+            return ResponseEntity.ok(userMapper.toResponse(user));
         }
 
-        return ResponseEntity.ok(UserMapper.toResponseWithoutEmail(user));
+        return ResponseEntity.ok(userMapper.toResponseWithoutEmail(user));
     }
 }
