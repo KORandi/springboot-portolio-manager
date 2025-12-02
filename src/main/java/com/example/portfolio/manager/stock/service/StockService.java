@@ -4,6 +4,8 @@ import com.example.portfolio.manager.company.model.Company;
 import com.example.portfolio.manager.stock.model.Currency;
 import com.example.portfolio.manager.stock.model.StockExchange;
 import com.example.portfolio.manager.stock.model.StockPrice;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -15,10 +17,10 @@ public interface StockService {
 
     StockPrice getLatestPrice(Company company, StockExchange exchange);
 
-    List<StockPrice> getPriceHistory(Company company, StockExchange exchange,
-                                     LocalDateTime start, LocalDateTime end);
+    Page<StockPrice> getPriceHistory(Company company, StockExchange exchange,
+                                     LocalDateTime start, LocalDateTime end, Pageable pageable);
 
-    List<StockPrice> getAllPricesForCompany(Company company, StockExchange exchange);
+    Page<StockPrice> getAllPricesForCompany(Company company, StockExchange exchange, Pageable pageable);
 
     BigDecimal getAveragePrice(Company company, StockExchange exchange,
                                LocalDateTime start, LocalDateTime end);

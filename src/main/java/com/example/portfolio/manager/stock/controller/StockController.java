@@ -9,6 +9,9 @@ import com.example.portfolio.manager.stock.model.StockExchange;
 import com.example.portfolio.manager.stock.model.StockPrice;
 import com.example.portfolio.manager.stock.service.StockService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,10 +19,10 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/stocks")
@@ -55,29 +58,31 @@ public class StockController {
 
     @GetMapping("/price/history/{ticker}")
     @PreAuthorize("isAuthenticated()")
-    public ResponseEntity<List<StockPriceResponse>> getPriceHistory(
+    public ResponseEntity<Page<StockPriceResponse>> getPriceHistory(
             @PathVariable String ticker,
             @RequestParam StockExchange exchange,
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime start,
-            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime end) {
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime end,
+            @RequestParam(defaultValue = "0") @Min(0) int page,
+            @RequestParam(defaultValue = "100") @Max(100) @Min(1) int size) {
         Company company = companyService.findByTicker(ticker);
-        List<StockPrice> prices = stockService.getPriceHistory(company, exchange, start, end);
-        List<StockPriceResponse> response = prices.stream()
-                .map(StockPriceMapper::toResponse)
-                .collect(Collectors.toList());
+        Pageable pageable = PageRequest.of(page, size);
+        Page<StockPrice> prices = stockService.getPriceHistory(company, exchange, start, end, pageable);
+        Page<StockPriceResponse> response = prices.map(StockPriceMapper::toResponse);
         return ResponseEntity.ok(response);
     }
 
     @GetMapping("/price/all/{ticker}")
     @PreAuthorize("isAuthenticated()")
-    public ResponseEntity<List<StockPriceResponse>> getAllPrices(
+    public ResponseEntity<Page<StockPriceResponse>> getAllPrices(
             @PathVariable String ticker,
-            @RequestParam StockExchange exchange) {
+            @RequestParam StockExchange exchange,
+            @RequestParam(defaultValue = "0") @Min(0) int page,
+            @RequestParam(defaultValue = "100") @Max(100) @Min(1) int size) {
         Company company = companyService.findByTicker(ticker);
-        List<StockPrice> prices = stockService.getAllPricesForCompany(company, exchange);
-        List<StockPriceResponse> response = prices.stream()
-                .map(StockPriceMapper::toResponse)
-                .collect(Collectors.toList());
+        Pageable pageable = PageRequest.of(page, size);
+        Page<StockPrice> prices = stockService.getAllPricesForCompany(company, exchange, pageable);
+        Page<StockPriceResponse> response = prices.map(StockPriceMapper::toResponse);
         return ResponseEntity.ok(response);
     }
 

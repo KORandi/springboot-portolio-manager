@@ -8,6 +8,8 @@ import com.example.portfolio.manager.stock.model.StockPrice;
 import com.example.portfolio.manager.stock.repository.StockPriceRepository;
 import com.example.portfolio.manager.stock.service.StockService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -44,16 +46,16 @@ public class StockServiceImpl implements StockService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<StockPrice> getPriceHistory(Company company, StockExchange exchange,
-                                            LocalDateTime start, LocalDateTime end) {
+    public Page<StockPrice> getPriceHistory(Company company, StockExchange exchange,
+                                            LocalDateTime start, LocalDateTime end, Pageable pageable) {
         return stockPriceRepository.findByCompanyAndExchangeAndTimestampBetweenOrderByTimestampAsc(
-                company, exchange, start, end);
+                company, exchange, start, end, pageable);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public List<StockPrice> getAllPricesForCompany(Company company, StockExchange exchange) {
-        return stockPriceRepository.findByCompanyAndExchangeOrderByTimestampDesc(company, exchange);
+    public Page<StockPrice> getAllPricesForCompany(Company company, StockExchange exchange, Pageable pageable) {
+        return stockPriceRepository.findByCompanyAndExchangeOrderByTimestampDesc(company, exchange, pageable);
     }
 
     @Override

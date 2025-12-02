@@ -2,8 +2,8 @@ package com.example.portfolio.manager.company.service;
 
 import com.example.portfolio.manager.company.model.Company;
 import com.example.portfolio.manager.company.model.Sector;
-
-import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 public interface CompanyService {
 
@@ -13,11 +13,11 @@ public interface CompanyService {
 
     Company findById(Long id);
 
-    List<Company> findAll();
+    Page<Company> findAll(Pageable pageable);
 
-    List<Company> findBySector(Sector sector);
+    Page<Company> findBySector(Sector sector, Pageable pageable);
 
-    List<Company> searchByName(String name);
+    Page<Company> searchByName(String name, Pageable pageable);
 
     Company updateCompany(Long id, Company company);
 

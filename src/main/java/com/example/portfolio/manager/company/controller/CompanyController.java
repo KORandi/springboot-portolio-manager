@@ -7,14 +7,18 @@ import com.example.portfolio.manager.common.dto.CompanyRequest;
 import com.example.portfolio.manager.common.dto.CompanyResponse;
 import com.example.portfolio.manager.common.util.CompanyMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.List;
-import java.util.stream.Collectors;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 
 @RestController
 @RequestMapping("/api/companies")
@@ -51,31 +55,37 @@ public class CompanyController {
 
     @GetMapping
     @PreAuthorize("isAuthenticated()")
-    public ResponseEntity<List<CompanyResponse>> getAllCompanies() {
-        List<Company> companies = companyService.findAll();
-        List<CompanyResponse> response = companies.stream()
-                .map(CompanyMapper::toResponse)
-                .collect(Collectors.toList());
+    public ResponseEntity<Page<CompanyResponse>> getAllCompanies(
+            @RequestParam(defaultValue = "0") @Min(0) int page,
+            @RequestParam(defaultValue = "20") @Min(1) @Max(20) int size,
+            @RequestParam(defaultValue = "ticker") String sortBy) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by(sortBy));
+        Page<Company> companies = companyService.findAll(pageable);
+        Page<CompanyResponse> response = companies.map(CompanyMapper::toResponse);
         return ResponseEntity.ok(response);
     }
 
     @GetMapping("/sector/{sector}")
     @PreAuthorize("isAuthenticated()")
-    public ResponseEntity<List<CompanyResponse>> getCompaniesBySector(@PathVariable Sector sector) {
-        List<Company> companies = companyService.findBySector(sector);
-        List<CompanyResponse> response = companies.stream()
-                .map(CompanyMapper::toResponse)
-                .collect(Collectors.toList());
+    public ResponseEntity<Page<CompanyResponse>> getCompaniesBySector(
+            @PathVariable Sector sector,
+            @RequestParam(defaultValue = "0") @Min(0) int page,
+            @RequestParam(defaultValue = "20") @Min(1) @Max(20) int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Company> companies = companyService.findBySector(sector, pageable);
+        Page<CompanyResponse> response = companies.map(CompanyMapper::toResponse);
         return ResponseEntity.ok(response);
     }
 
     @GetMapping("/search")
     @PreAuthorize("isAuthenticated()")
-    public ResponseEntity<List<CompanyResponse>> searchCompanies(@RequestParam String name) {
-        List<Company> companies = companyService.searchByName(name);
-        List<CompanyResponse> response = companies.stream()
-                .map(CompanyMapper::toResponse)
-                .collect(Collectors.toList());
+    public ResponseEntity<Page<CompanyResponse>> searchCompanies(
+            @RequestParam String name,
+            @RequestParam(defaultValue = "0") @Min(0) int page,
+            @RequestParam(defaultValue = "20") @Min(1) @Max(20) int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Company> companies = companyService.searchByName(name, pageable);
+        Page<CompanyResponse> response = companies.map(CompanyMapper::toResponse);
         return ResponseEntity.ok(response);
     }
 

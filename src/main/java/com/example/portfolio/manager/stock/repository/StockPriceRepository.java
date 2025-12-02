@@ -4,6 +4,8 @@ import com.example.portfolio.manager.company.model.Company;
 import com.example.portfolio.manager.stock.model.Currency;
 import com.example.portfolio.manager.stock.model.StockExchange;
 import com.example.portfolio.manager.stock.model.StockPrice;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -20,16 +22,18 @@ public interface StockPriceRepository extends JpaRepository<StockPrice, Long> {
     Optional<StockPrice> findFirstByCompanyAndExchangeOrderByTimestampDesc(
             Company company, StockExchange exchange);
 
-    List<StockPrice> findByCompanyAndExchangeAndTimestampBetweenOrderByTimestampAsc(
+    Page<StockPrice> findByCompanyAndExchangeOrderByTimestampDesc(
+            Company company, StockExchange exchange, Pageable pageable);
+
+    Page<StockPrice> findByCompanyAndExchangeAndTimestampBetweenOrderByTimestampAsc(
             Company company,
             StockExchange exchange,
             LocalDateTime start,
-            LocalDateTime end);
+            LocalDateTime end,
+            Pageable pageable);
 
-    List<StockPrice> findByCompanyAndExchangeOrderByTimestampDesc(
-            Company company, StockExchange exchange);
-
-    List<StockPrice> findByCompanyOrderByTimestampDesc(Company company);
+    Page<StockPrice> findByCompanyOrderByTimestampDesc(
+            Company company, Pageable pageable);
 
     List<StockPrice> findByCompanyAndCurrency(Company company, Currency currency);
 

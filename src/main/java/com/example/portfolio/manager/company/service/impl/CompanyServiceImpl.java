@@ -7,10 +7,10 @@ import com.example.portfolio.manager.company.service.CompanyService;
 import com.example.portfolio.manager.common.exception.DuplicateResourceException;
 import com.example.portfolio.manager.common.exception.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 @Service
 @Transactional
@@ -47,27 +47,26 @@ public class CompanyServiceImpl implements CompanyService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<Company> findAll() {
-        return companyRepository.findAll();
+    public Page<Company> findAll(Pageable pageable) {
+        return companyRepository.findAll(pageable);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public List<Company> findBySector(Sector sector) {
-        return companyRepository.findBySector(sector);
+    public Page<Company> findBySector(Sector sector, Pageable pageable) {
+        return companyRepository.findBySector(sector, pageable);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public List<Company> searchByName(String name) {
-        return companyRepository.findByNameContainingIgnoreCase(name);
+    public Page<Company> searchByName(String name, Pageable pageable) {
+        return companyRepository.findByNameContainingIgnoreCase(name, pageable);
     }
 
     @Override
     public Company updateCompany(Long id, Company updatedCompany) {
         Company existingCompany = findById(id);
 
-        // Update fields
         if (updatedCompany.getName() != null) {
             existingCompany.setName(updatedCompany.getName());
         }
