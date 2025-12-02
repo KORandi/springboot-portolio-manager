@@ -3,6 +3,8 @@ package com.example.portfolio.manager.auth.service.impl;
 import com.example.portfolio.manager.auth.model.User;
 import com.example.portfolio.manager.auth.repository.UserRepository;
 import com.example.portfolio.manager.auth.service.AuthService;
+import com.example.portfolio.manager.common.exception.DuplicateResourceException;
+import com.example.portfolio.manager.common.exception.InvalidCredentialsException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -29,10 +31,10 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public User register(String username, String password, String email) {
         if (existsByUsername(username)) {
-            throw new RuntimeException("Username already exists");
+            throw new DuplicateResourceException("Username already exists");
         }
         if (existsByEmail(email)) {
-            throw new RuntimeException("Email already exists");
+            throw new DuplicateResourceException("Email already exists");
         }
 
         String hashedPassword = passwordEncoder.encode(password);
@@ -44,10 +46,10 @@ public class AuthServiceImpl implements AuthService {
     @Transactional(readOnly = true)
     public User login(String username, String password) {
         User user = userRepository.findByUsername(username)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new InvalidCredentialsException("User not found"));
 
         if (!passwordEncoder.matches(password, user.getPassword())) {
-            throw new RuntimeException("Invalid password");
+            throw new InvalidCredentialsException("Invalid password");
         }
 
         return user;
@@ -56,7 +58,7 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public User findByUsername(String username) {
         return userRepository.findByUsername(username)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new InvalidCredentialsException("User not found"));
     }
 
     @Override
