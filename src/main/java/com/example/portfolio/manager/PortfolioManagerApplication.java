@@ -16,7 +16,7 @@ public class PortfolioManagerApplication {
         String jwtExpiration = dotenv.get("JWT_EXPIRATION");
 
         if (jwtSecret == null || jwtSecret.isEmpty()) {
-            throw new IllegalStateException("JWT_TOKEN is empty");
+            throw new IllegalStateException("JWT_SECRET is empty");
         }
 
         if (jwtExpiration == null || jwtExpiration.isEmpty()) {
